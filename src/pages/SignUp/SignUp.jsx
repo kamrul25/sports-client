@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, } from "react-hook-form";
 import { Link } from "react-router-dom";
 import img from "../../assets/sign.jpg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -22,6 +22,7 @@ const SignUp = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    // reset()
   };
   return (
     <div>
@@ -145,7 +146,7 @@ const SignUp = () => {
               </div>
             </form>
             <p className="absolute left-10 bottom-1 text-lg ">
-              Have An Account. Please{" "}
+              Already Have An Account. Please{" "}
               <Link to="/signIn" className="link link-accent">
                 Login
               </Link>
