@@ -7,6 +7,7 @@ import SignUp from "../pages/SignUp/SignUp";
 import Classes from "../pages/Classes/Classes";
 import Instructors from "../pages/Instructors/Instructors";
 import Dashboard from "../pages/Dashboard/Dashboard/Dashboard";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -15,16 +16,21 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage></ErrorPage>,
     children: [
       { path: "/", element: <Home></Home> },
-      {path:'classes', element:<Classes></Classes>},
-      {path:'instructors', element:<Instructors></Instructors>},
+      { path: "classes", element: <Classes></Classes> },
+      { path: "instructors", element: <Instructors></Instructors> },
       { path: "signIn", element: <SignIn></SignIn> },
       { path: "signUp", element: <SignUp></SignUp> },
     ],
-  },{
-    path:'dashboard',
-    element:<Dashboard></Dashboard>,
+  },
+  {
+    path: "dashboard",
+    element: (
+      <PrivateRoute>
+        <Dashboard></Dashboard>
+      </PrivateRoute>
+    ),
     errorElement: <ErrorPage></ErrorPage>,
-  }
+  },
 ]);
 
 export default router;
