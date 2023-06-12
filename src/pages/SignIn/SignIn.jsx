@@ -150,7 +150,7 @@ const SignIn = () => {
               </div>
               <p className="absolute left-10 top-[64%] text-lg ">
                 Haven't An Account. Please{" "}
-                <Link to="/signUp" className="link link-accent">
+                <Link to="/signUp" className="link link-primary">
                   Create
                 </Link>
               </p>

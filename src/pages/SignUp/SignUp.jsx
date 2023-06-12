@@ -181,7 +181,7 @@ const SignUp = () => {
             </form>
             <p className="absolute left-10 bottom-1 text-lg ">
               Already Have An Account. Please{" "}
-              <Link to="/signIn" className="link link-accent">
+              <Link to="/signIn" className="link link-primary">
                 Login
               </Link>
             </p>
