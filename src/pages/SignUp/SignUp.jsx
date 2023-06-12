@@ -3,7 +3,9 @@ import { useForm, } from "react-hook-form";
 import { Link } from "react-router-dom";
 import img from "../../assets/sign.jpg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
+import { updateProfile } from "firebase/auth";
 
 const SignUp = () => {
   const {
@@ -16,13 +18,28 @@ const SignUp = () => {
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState(false);
-
+  const {createUser} = useContext(AuthContext)
   let password;
   password = watch("password", "");
 
   const onSubmit = (data) => {
     console.log(data);
-    // reset()
+    createUser(data.email, data.password)
+    .then(result =>{
+      const user = result.user;
+      
+      updateProfile(user, {
+        displayName: data.name,
+        photoURL: data.photoURL
+      })
+      .then(()=>{
+
+        reset();
+      })
+    })
+    .catch(error => {
+      console.log(error)
+    })
   };
   return (
     <div>

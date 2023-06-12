@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import img from "../../assets/sign.jpg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
+import  { AuthContext } from "../../provider/AuthProvider";
+
 
 const SignIn = () => {
   const {
@@ -14,10 +16,31 @@ const SignIn = () => {
     reset,
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+  const { login, googleSignIn } = useContext(AuthContext);
 
   const onSubmit = (data) => {
     console.log(data);
-    reset()
+    login(data.email, data.password)
+    .then(result =>{
+      const user = result.user;
+      console.log(user)
+      reset();
+    })
+    .catch(error => {
+      console.log(error)
+    })
+   
+  };
+
+  const handleGoogle = () => {
+    googleSignIn()
+    .then(result =>{
+      const user = result.user;
+      console.log(user)
+    })
+    .catch(error => {
+      console.log(error)
+    })
   };
   return (
     <div>
@@ -32,87 +55,88 @@ const SignIn = () => {
           </div>
           <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 relative">
             <div className="card-body">
-            <form onSubmit={handleSubmit(onSubmit)} >
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Email</span>
-                </label>
-                <input
-                  type="email"
-                  {...register("email", { required: true })}
-                  placeholder="email"
-                  className="input input-bordered  input-primary w-full"
-                />
-                {errors.email?.type === "required" && (
-                  <p className="mt-2 text-red-600">Email is required</p>
-                )}
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Password</span>
-                </label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  {...register("password", {
-                    required: true,
-                    minLength: 6,
-                    maxLength: 12,
-                    pattern: /(?=.*[A-Z])(?=.*[!@#$&*])/,
-                  })}
-                  placeholder="password"
-                  className="input input-bordered  input-primary w-full"
-                />
-                {errors.password?.type === "required" && (
-                  <p className="mt-2 text-red-600">Password is required</p>
-                )}
-                {errors.password?.type === "minLength" && (
-                  <p className="mt-2 text-red-600">
-                    Password must be 6 characters
-                  </p>
-                )}
-                {errors.password?.type === "maxLength" && (
-                  <p className="mt-2 text-red-600">
-                    Password must be less than 12 characters
-                  </p>
-                )}
-                {errors.password?.type === "pattern" && (
-                  <p className="mt-2 text-red-600">
-                    Password must have one Uppercase and one special character.
-                  </p>
-                )}
-              </div>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Email</span>
+                  </label>
+                  <input
+                    type="email"
+                    {...register("email", { required: true })}
+                    placeholder="email"
+                    className="input input-bordered  input-primary w-full"
+                  />
+                  {errors.email?.type === "required" && (
+                    <p className="mt-2 text-red-600">Email is required</p>
+                  )}
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Password</span>
+                  </label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    {...register("password", {
+                      required: true,
+                      minLength: 6,
+                      maxLength: 12,
+                      pattern: /(?=.*[A-Z])(?=.*[!@#$&*])/,
+                    })}
+                    placeholder="password"
+                    className="input input-bordered  input-primary w-full"
+                  />
+                  {errors.password?.type === "required" && (
+                    <p className="mt-2 text-red-600">Password is required</p>
+                  )}
+                  {errors.password?.type === "minLength" && (
+                    <p className="mt-2 text-red-600">
+                      Password must be 6 characters
+                    </p>
+                  )}
+                  {errors.password?.type === "maxLength" && (
+                    <p className="mt-2 text-red-600">
+                      Password must be less than 12 characters
+                    </p>
+                  )}
+                  {errors.password?.type === "pattern" && (
+                    <p className="mt-2 text-red-600">
+                      Password must have one Uppercase and one special
+                      character.
+                    </p>
+                  )}
+                </div>
 
-              <div className="form-control mt-6">
-                <input
-                  className="btn btn-primary"
-                  type="submit"
-                  value="Sign Up"
-                />
+                <div className="form-control mt-6">
+                  <input
+                    className="btn btn-primary"
+                    type="submit"
+                    value="Sign Up"
+                  />
+                </div>
+              </form>
+              <div className="divider mt-8">Or Login With</div>
+              <div className="form-control ">
+                <button className="btn btn-primary" onClick={handleGoogle}>
+                  <FcGoogle className="text-2xl mr-3" />{" "}
+                  <span className="text-sm ">Google</span>
+                </button>
               </div>
-            </form>
-            <div className="divider mt-8">Or Login With</div>
-            <div className="form-control ">
-              <button className="btn btn-primary ">
-                <FcGoogle className="text-2xl mr-3" />{" "}
-                <span className="text-sm ">Google</span>
-              </button>
-            </div>
-            <p className="absolute left-10 top-[64%] text-lg ">
-              Haven't An Account. Please{" "}
-              <Link to="/signUp" className="link link-accent">
-                Create
-              </Link>
-            </p>
+              <p className="absolute left-10 top-[64%] text-lg ">
+                Haven't An Account. Please{" "}
+                <Link to="/signUp" className="link link-accent">
+                  Create
+                </Link>
+              </p>
 
-            {showPassword ? (
-              <button className="absolute top-[38%] right-12 text-2xl">
-                <FaEyeSlash onClick={() => setShowPassword(!showPassword)} />
-              </button>
-            ) : (
-              <button className="absolute top-[38%] right-12 text-2xl">
-                <FaEye onClick={() => setShowPassword(!showPassword)} />
-              </button>
-            )}
+              {showPassword ? (
+                <button className="absolute top-[38%] right-12 text-2xl">
+                  <FaEyeSlash onClick={() => setShowPassword(!showPassword)} />
+                </button>
+              ) : (
+                <button className="absolute top-[38%] right-12 text-2xl">
+                  <FaEye onClick={() => setShowPassword(!showPassword)} />
+                </button>
+              )}
             </div>
           </div>
         </div>
