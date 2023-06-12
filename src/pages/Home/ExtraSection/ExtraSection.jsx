@@ -1,6 +1,7 @@
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import img1 from "../../../assets/reviews/kamrul.jpg";
 import img2 from "../../../assets/reviews/sifat.jpg";
+import { Fade } from "react-awesome-reveal";
 
 const ExtraSection = () => {
   return (
@@ -10,6 +11,7 @@ const ExtraSection = () => {
         heading="WHAT ARE THEY SAYING"
       ></SectionTitle>
 
+      <Fade direction="right">
       <div className="flex justify-between items-center gap-10">
         <div className="shadow-lg rounded-lg    p-4 space-y-3">
           <div className="flex justify-start items-center gap-5">
@@ -44,6 +46,8 @@ const ExtraSection = () => {
           </div>
         </div>
       </div>
+      </Fade>
+     
     </div>
   );
 };
