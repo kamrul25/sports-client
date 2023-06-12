@@ -40,7 +40,7 @@ const SignUp = () => {
       .then(()=>{
         Swal.fire({
           title: "Success!",
-          text: `${user.displayName} your successfully login`,
+          text: `${user.displayName} you sign up successfully! `,
           icon: "success",
           showConfirmButton: false,
           timer: 1500,

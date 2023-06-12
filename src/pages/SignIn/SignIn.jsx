@@ -26,11 +26,10 @@ const SignIn = () => {
     login(data.email, data.password)
       .then((result) => {
         const user = result.user;
-        console.log(user);
 
         Swal.fire({
           title: "Success!",
-          text: `${user.displayName} your successfully login`,
+          text: `${user.displayName} you login successfully `,
           icon: "success",
           showConfirmButton: false,
           timer: 1500,
@@ -52,10 +51,22 @@ const SignIn = () => {
     googleSignIn()
       .then((result) => {
         const user = result.user;
-        console.log(user);
+        Swal.fire({
+          title: "Success!",
+          text: `${user.displayName} you login successfully `,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(form, { replace: true });
       })
       .catch((error) => {
-        console.log(error);
+        Swal.fire({
+          title: "Error!",
+          text: `${error.message}`,
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
       });
   };
   return (
