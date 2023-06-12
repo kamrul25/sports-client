@@ -32,21 +32,32 @@ const SignUp = () => {
     createUser(data.email, data.password)
     .then(result =>{
       const user = result.user;
-      
+      const userData = {name: data.name, email: data.email}
       updateProfile(user, {
         displayName: data.name,
         photoURL: data.photoURL
       })
       .then(()=>{
-        Swal.fire({
-          title: "Success!",
-          text: `${user.displayName} you sign up successfully! `,
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate(form, {replace: true})
-        reset();
+        fetch("https://sports-server-two.vercel.app/users",{
+          method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(userData),
+        })
+        .then(res =>res.json())
+        .then(resData => {
+          if(resData.insertedId){
+            reset();
+            Swal.fire({
+              title: "Success!",
+              text: `${user.displayName} you sign up successfully! `,
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            navigate(form, {replace: true})
+          }
+        })
+          
       })
     })
     .catch(error => {

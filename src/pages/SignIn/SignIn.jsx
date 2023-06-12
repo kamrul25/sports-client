@@ -50,15 +50,38 @@ const SignIn = () => {
   const handleGoogle = () => {
     googleSignIn()
       .then((result) => {
-        const user = result.user;
-        Swal.fire({
-          title: "Success!",
-          text: `${user.displayName} you login successfully `,
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate(form, { replace: true });
+        const userData = {
+          name: result.user.displayName,
+          email: result.user.email,
+        };
+        fetch("https://sports-server-two.vercel.app/users", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(userData),
+        })
+          .then((res) => res.json())
+          .then((resData) => {
+            if (resData.insertedId) {
+              Swal.fire({
+                title: "Success!",
+                text: `${result.user.displayName} you sign up successfully! `,
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              navigate(form, { replace: true });
+            }
+            else{
+              Swal.fire({
+                title: "Success!",
+                text: `${result.user.displayName} you sign up successfully! `,
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              navigate(form, { replace: true });
+            }
+          });
       })
       .catch((error) => {
         Swal.fire({
