@@ -1,11 +1,12 @@
 import { Helmet } from "react-helmet-async";
 import { useForm, } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import img from "../../assets/sign.jpg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { updateProfile } from "firebase/auth";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
   const {
@@ -19,6 +20,10 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState(false);
   const {createUser} = useContext(AuthContext)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const form = location?.state?.form?.pathname || '/'
+  
   let password;
   password = watch("password", "");
 
@@ -33,12 +38,24 @@ const SignUp = () => {
         photoURL: data.photoURL
       })
       .then(()=>{
-
+        Swal.fire({
+          title: "Success!",
+          text: `${user.displayName} your successfully login`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(form, {replace: true})
         reset();
       })
     })
     .catch(error => {
-      console.log(error)
+      Swal.fire({
+        title: "Error!",
+        text: `${error.message}`,
+        icon: "error",
+        confirmButtonText: "Try Again",
+      });
     })
   };
   return (

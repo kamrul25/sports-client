@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import img from "../../assets/sign.jpg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
-import  { AuthContext } from "../../provider/AuthProvider";
-
+import { AuthContext } from "../../provider/AuthProvider";
+import Swal from "sweetalert2";
 
 const SignIn = () => {
   const {
@@ -17,30 +17,46 @@ const SignIn = () => {
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const { login, googleSignIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const form = location?.state?.form?.pathname || "/";
 
   const onSubmit = (data) => {
     console.log(data);
     login(data.email, data.password)
-    .then(result =>{
-      const user = result.user;
-      console.log(user)
-      reset();
-    })
-    .catch(error => {
-      console.log(error)
-    })
-   
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+
+        Swal.fire({
+          title: "Success!",
+          text: `${user.displayName} your successfully login`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(form, { replace: true });
+        reset();
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Error!",
+          text: `${error.message}`,
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
+      });
   };
 
   const handleGoogle = () => {
     googleSignIn()
-    .then(result =>{
-      const user = result.user;
-      console.log(user)
-    })
-    .catch(error => {
-      console.log(error)
-    })
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <div>
