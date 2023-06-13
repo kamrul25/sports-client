@@ -1,15 +1,37 @@
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import Swal from "sweetalert2";
 
 const ManageUsers = () => {
-  const [users, setUsers] = useState([]);
-  useEffect(() => {
-    axios(`https://sports-server-two.vercel.app/users`).then((data) => {
-      console.log(data.data);
-      setUsers(data.data);
-    });
-  }, []);
+  const {data: users = [], refetch} = useQuery({
+    queryKey:["users"],
+    queryFn:async () =>{
+        const res = await   axios(`https://sports-server-two.vercel.app/users`)
+        return res.data;
+    }
+  })
+
+  const handleAction = (user, role) =>{
+   
+   fetch(`https://sports-server-two.vercel.app/users/admin/${user._id}`,{
+    method:"PATCH",
+    headers:{"content-type":"application/json"},
+    body: JSON.stringify({role: role})
+   }).then(res => res.json())
+   .then(data =>{
+    if (data.modifiedCount) {
+        refetch();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${user.name} is ${role ==='admin'?'an Admin': 'a instructor'} Now!`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+   })
+  }
   return (
     <div className="overflow-x-auto">
       <Helmet>
@@ -41,7 +63,7 @@ const ManageUsers = () => {
                     Admin
                   </button>
                 ) : (
-                  <button className="btn btn-success" >
+                  <button className="btn btn-success" onClick={() => handleAction(user, "admin")}>
                     Admin
                   </button>               
                 )}
@@ -50,7 +72,7 @@ const ManageUsers = () => {
                     Instructor
                   </button>
                 ) : (
-                  <button className="btn btn-success" >
+                  <button className="btn btn-success" onClick={() => handleAction(user, "instructor")}>
                     Instructor
                   </button>               
                 )}
