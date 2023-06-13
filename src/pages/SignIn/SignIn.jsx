@@ -22,7 +22,7 @@ const SignIn = () => {
   const form = location?.state?.form?.pathname || "/";
 
   const onSubmit = (data) => {
-    console.log(data);
+   
     login(data.email, data.password)
       .then((result) => {
         const user = result.user;
@@ -52,6 +52,7 @@ const SignIn = () => {
       .then((result) => {
         const userData = {
           name: result.user.displayName,
+          image: result.user.photoURL,
           email: result.user.email,
         };
         fetch("https://sports-server-two.vercel.app/users", {

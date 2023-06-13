@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useForm, } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import img from "../../assets/sign.jpg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -19,55 +19,57 @@ const SignUp = () => {
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState(false);
-  const {createUser} = useContext(AuthContext)
-  const navigate = useNavigate()
-  const location = useLocation()
-  const form = location?.state?.form?.pathname || '/'
-  
+  const { createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const form = location?.state?.form?.pathname || "/";
+
   let password;
   password = watch("password", "");
 
   const onSubmit = (data) => {
-    console.log(data);
+   
     createUser(data.email, data.password)
-    .then(result =>{
-      const user = result.user;
-      const userData = {name: data.name, email: data.email}
-      updateProfile(user, {
-        displayName: data.name,
-        photoURL: data.photoURL
-      })
-      .then(()=>{
-        fetch("https://sports-server-two.vercel.app/users",{
-          method: "POST",
+      .then((result) => {
+        const user = result.user;
+        const userData = {
+          name: data.name,
+          image: data.photoURL,
+          email: data.email,
+        };
+        updateProfile(user, {
+          displayName: data.name,
+          photoURL: data.photoURL,
+        }).then(() => {
+          fetch("https://sports-server-two.vercel.app/users", {
+            method: "POST",
             headers: { "content-type": "application/json" },
             body: JSON.stringify(userData),
-        })
-        .then(res =>res.json())
-        .then(resData => {
-          if(resData.insertedId){
-            reset();
-            Swal.fire({
-              title: "Success!",
-              text: `${user.displayName} you sign up successfully! `,
-              icon: "success",
-              showConfirmButton: false,
-              timer: 1500,
+          })
+            .then((res) => res.json())
+            .then((resData) => {
+              if (resData.insertedId) {
+                reset();
+                Swal.fire({
+                  title: "Success!",
+                  text: `${user.displayName} you sign up successfully! `,
+                  icon: "success",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+                navigate(form, { replace: true });
+              }
             });
-            navigate(form, {replace: true})
-          }
-        })
-          
+        });
       })
-    })
-    .catch(error => {
-      Swal.fire({
-        title: "Error!",
-        text: `${error.message}`,
-        icon: "error",
-        confirmButtonText: "Try Again",
+      .catch((error) => {
+        Swal.fire({
+          title: "Error!",
+          text: `${error.message}`,
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
       });
-    })
   };
   return (
     <div>
@@ -149,7 +151,7 @@ const SignUp = () => {
                   <span className="label-text">Confirm Password</span>
                 </label>
                 <input
-                   type={confirmPassword ? "text" : "password"}
+                  type={confirmPassword ? "text" : "password"}
                   {...register("confirmPassword", {
                     required: true,
                     validate: (value) => value === getValues("password"),
@@ -208,7 +210,9 @@ const SignUp = () => {
             )}
             {confirmPassword ? (
               <button className="absolute top-[60%] right-12 text-2xl">
-                <FaEyeSlash onClick={() => setConfirmPassword(!confirmPassword)} />
+                <FaEyeSlash
+                  onClick={() => setConfirmPassword(!confirmPassword)}
+                />
               </button>
             ) : (
               <button className="absolute top-[60%] right-12 text-2xl">

@@ -9,6 +9,7 @@ import {
   signOut,
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -42,8 +43,20 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      // console.log("currentUser",currentUser)
-      setLoading(false);
+      
+      if (currentUser) {
+        // get and post
+        const user = { email: currentUser.email };
+
+        axios.post(`https://sports-server-two.vercel.app/jwt`, user)
+        .then(data=>{
+          localStorage.setItem("access-token", data.data.token);
+          setLoading(false);
+        })
+    
+      } else {
+        localStorage.removeItem("access-token");
+      }
     });
 
     return () => {
