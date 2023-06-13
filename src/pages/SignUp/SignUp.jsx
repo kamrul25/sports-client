@@ -36,6 +36,7 @@ const SignUp = () => {
           name: data.name,
           image: data.photoURL,
           email: data.email,
+          role: "student",
         };
         updateProfile(user, {
           displayName: data.name,

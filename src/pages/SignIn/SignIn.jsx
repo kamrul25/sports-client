@@ -22,20 +22,45 @@ const SignIn = () => {
   const form = location?.state?.form?.pathname || "/";
 
   const onSubmit = (data) => {
-   
     login(data.email, data.password)
       .then((result) => {
-        const user = result.user;
-
-        Swal.fire({
-          title: "Success!",
-          text: `${user.displayName} you login successfully `,
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate(form, { replace: true });
-        reset();
+        const userData = {
+          name: result.user.displayName,
+          image: result.user.photoURL,
+          email: result.user.email,
+          role: "student",
+        };
+        fetch("https://sports-server-two.vercel.app/users", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(userData),
+        })
+          .then((res) => res.json())
+          .then((resData) => {
+            if (resData.insertedId) {
+              Swal.fire({
+                title: "Success!",
+                text: `${result.user.displayName} you sign up successfully! `,
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              navigate(form, { replace: true });
+              reset();
+            }
+            else{
+              Swal.fire({
+                title: "Success!",
+                text: `${result.user.displayName} you sign up successfully! `,
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              navigate(form, { replace: true });
+              reset();
+            }
+          });
+        
       })
       .catch((error) => {
         Swal.fire({
@@ -54,6 +79,7 @@ const SignIn = () => {
           name: result.user.displayName,
           image: result.user.photoURL,
           email: result.user.email,
+          role: "student",
         };
         fetch("https://sports-server-two.vercel.app/users", {
           method: "POST",

@@ -6,8 +6,10 @@ import SignIn from "../pages/SignIn/SignIn";
 import SignUp from "../pages/SignUp/SignUp";
 import Classes from "../pages/Classes/Classes";
 import Instructors from "../pages/Instructors/Instructors";
-import Dashboard from "../pages/Dashboard/Dashboard/Dashboard";
 import PrivateRoute from "./PrivateRoute";
+import Dashboard from "../layoutes/Dashboard";
+import ManageUsers from "../pages/Dashboard/Admin/ManageUsers/ManageUsers";
+import ManageClasses from "../pages/Dashboard/Admin/ManageClasses/ManageClasses";
 
 const router = createBrowserRouter([
   {
@@ -23,13 +25,17 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "dashboard",
+    path: "/dashboard",
     element: (
       <PrivateRoute>
         <Dashboard></Dashboard>
       </PrivateRoute>
     ),
     errorElement: <ErrorPage></ErrorPage>,
+    children: [
+      { path: "allUsers", element: <ManageUsers></ManageUsers> },
+      {path:"manageClasses", element:<ManageClasses></ManageClasses>},
+    ],
   },
 ]);
 
