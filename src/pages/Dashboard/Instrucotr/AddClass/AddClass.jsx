@@ -33,6 +33,7 @@ const AddClass = () => {
             image: imgURL,
             instructorName,
             instructorEmail,
+            status:"pending"
           };
 
           axiosSecure.post("/classes", newClass).then((data) => {
@@ -96,10 +97,7 @@ const AddClass = () => {
               type="text"
               defaultValue={user.displayName}
               readOnly
-              {...register("instructorName", {
-                required: true,
-                maxLength: 120,
-              })}
+              {...register("instructorName", )}
               className="input input-bordered w-full "
             />
           </div>
@@ -111,7 +109,7 @@ const AddClass = () => {
               type="text"
               defaultValue={user.email}
               readOnly
-              {...register("instructorEmail", { required: true })}
+              {...register("instructorEmail", )}
               className="input input-bordered w-full "
             />
           </div>
