@@ -1,11 +1,22 @@
 import { Helmet } from "react-helmet-async";
 import { NavLink, Outlet } from "react-router-dom";
 import { FaWallet, FaHome, FaBook, FaUsers } from "react-icons/fa";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../provider/AuthProvider";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const Dashboard = () => {
-  const isAdmin = true;
-  const isInstructor = false;
-  const isStudent = false;
+  const {user} = useContext(AuthContext)
+  const [axiosSecure] = useAxiosSecure();
+    const [role , setRole] = useState(null);
+    useEffect(()=>{
+        // axios(`https://sports-server-two.vercel.app/users/${user.email}`)
+        axiosSecure.get(`/users/${user.email}`)
+        .then(data =>{
+            setRole(data.data.role)
+        })
+    },[user, axiosSecure])
+ 
   return (
     <div>
       <Helmet>
@@ -27,7 +38,7 @@ const Dashboard = () => {
         <div className="drawer-side ">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
           <ul className="flex-col pl-12 pt-20 w-80 h-full bg-base-300 text-2xl">
-            {isAdmin && (
+            {role === 'admin' && (
               <div className="space-y-3">
                 <li>
                   <NavLink
@@ -59,7 +70,7 @@ const Dashboard = () => {
                 </li>
               </div>
             )}
-            {isInstructor && (
+            {role === 'instructor'&& (
               <div className="space-y-3">
                 <li>
                   <NavLink
@@ -93,7 +104,7 @@ const Dashboard = () => {
                 </li>
               </div>
             )}
-            {isStudent && (
+            {role === 'student' && (
               <div className="space-y-3">
                 <li>
                   <NavLink
