@@ -1,22 +1,21 @@
 import { Helmet } from "react-helmet-async";
 import { NavLink, Outlet } from "react-router-dom";
-import { FaWallet, FaHome, FaBook, FaUsers } from "react-icons/fa";
+import { FaWallet, FaHome, FaBook, FaUsers, FaClipboard } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const Dashboard = () => {
-  const {user} = useContext(AuthContext)
+  const { user, loading } = useContext(AuthContext);
   const [axiosSecure] = useAxiosSecure();
-    const [role , setRole] = useState(null);
-    useEffect(()=>{
-        // axios(`https://sports-server-two.vercel.app/users/${user.email}`)
-        axiosSecure.get(`/users/${user.email}`)
-        .then(data =>{
-            setRole(data.data.role)
-        })
-    },[user, axiosSecure])
- 
+  const [role, setRole] = useState(null);
+  useEffect(() => {
+    // axios(`https://sports-server-two.vercel.app/users/${user.email}`)
+   axiosSecure.get(`/users/${user?.email}`).then((data) => {
+    setRole(data.data.role);
+  });
+  }, [user, axiosSecure, loading]);
+
   return (
     <div>
       <Helmet>
@@ -38,7 +37,7 @@ const Dashboard = () => {
         <div className="drawer-side ">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
           <ul className="flex-col pl-12 pt-20 w-80 h-full bg-base-300 text-2xl">
-            {role === 'admin' && (
+            {role === "admin" && (
               <div className="space-y-3">
                 <li>
                   <NavLink
@@ -70,7 +69,7 @@ const Dashboard = () => {
                 </li>
               </div>
             )}
-            {role === 'instructor'&& (
+            {role === "instructor" && (
               <div className="space-y-3">
                 <li>
                   <NavLink
@@ -84,13 +83,13 @@ const Dashboard = () => {
                     }
                   >
                     {" "}
-                    Add A Class
+                  <FaClipboard></FaClipboard>  Add A Class
                   </NavLink>
                 </li>
 
                 <li>
                   <NavLink
-                    to="/dashboard/myClass"
+                    to="/dashboard/myClasses"
                     className={({ isActive, isPending }) =>
                       isActive
                         ? "text-success flex gap-2 items-center"
@@ -104,7 +103,7 @@ const Dashboard = () => {
                 </li>
               </div>
             )}
-            {role === 'student' && (
+            {role === "student" && (
               <div className="space-y-3">
                 <li>
                   <NavLink
