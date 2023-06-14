@@ -16,13 +16,13 @@ const AddClass = () => {
     const formData = new FormData();
     formData.append("image", data.image[0]);
 
-    console.log(data)
     fetch(img_hosting_url, {
       method: "POST",
       body: formData,
     })
       .then((res) => res.json())
       .then((imageResponse) => {
+        console.log(imageResponse)
         if (imageResponse.success) {
           const imgURL = imageResponse.data.display_url;
           const { name, price, seats, instructorName, instructorEmail } = data;
@@ -35,7 +35,7 @@ const AddClass = () => {
             instructorEmail,
             status:"pending"
           };
-
+          
           axiosSecure.post("/classes", newClass).then((data) => {
             if (data.data.insertedId) {
               reset();
@@ -74,7 +74,7 @@ const AddClass = () => {
               type="text"
               placeholder="Class Name"
               {...register("name", { required: true, maxLength: 120 })}
-              className="input input-bordered w-full "
+              className="input input-bordered input-primary w-full "
             />
           </div>
           <div className="form-control w-full mb-4">
@@ -84,7 +84,7 @@ const AddClass = () => {
             <input
               type="file"
               {...register("image", { required: true })}
-              className="file-input file-input-bordered w-full "
+              className="file-input file-input-bordered input-primary w-full "
             />
           </div>
         </div>
@@ -98,7 +98,7 @@ const AddClass = () => {
               defaultValue={user.displayName}
               readOnly
               {...register("instructorName", )}
-              className="input input-bordered w-full "
+              className="input input-bordered input-primary w-full "
             />
           </div>
           <div className="form-control w-full mb-4">
@@ -110,12 +110,12 @@ const AddClass = () => {
               defaultValue={user.email}
               readOnly
               {...register("instructorEmail", )}
-              className="input input-bordered w-full "
+              className="input input-bordered input-primary w-full "
             />
           </div>
         </div>
         <div className="flex items-center gap-4 my-2">
-          <div className="form-control w-full ml-4">
+          <div className="form-control w-full mb-4">
             <label className="label font-semibold">
               <span className="label-text font-semibold">Price</span>
             </label>
@@ -123,10 +123,10 @@ const AddClass = () => {
               type="number"
               {...register("price", { required: true })}
               placeholder="Type here about price"
-              className="input input-bordered w-full "
+              className="input input-bordered input-primary w-full "
             />
           </div>
-          <div className="form-control w-full ml-4">
+          <div className="form-control w-full mb-4">
             <label className="label font-semibold">
               <span className="label-text font-semibold">Available Seats</span>
             </label>
@@ -134,7 +134,7 @@ const AddClass = () => {
               type="number"
               {...register("seats", { required: true })}
               placeholder="Type here about available seats"
-              className="input input-bordered w-full "
+              className="input input-bordered input-primary w-full "
             />
           </div>
         </div>
