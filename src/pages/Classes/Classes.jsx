@@ -90,7 +90,7 @@ const Classes = () => {
               </div>
               <div className="card-actions justify-end my-4">
                 {user ? (
-                  userRole === "admin" || userRole === "instructor" || cla.seats === 0 ? (
+                  userRole === "admin" || userRole === "instructor" || cla.seats === "0" ? (
                     <button className="btn btn-primary" disabled>
                       Selected
                     </button>

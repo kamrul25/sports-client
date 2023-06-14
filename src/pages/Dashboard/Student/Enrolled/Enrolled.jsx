@@ -3,11 +3,12 @@ import { Helmet } from "react-helmet-async";
 import { AuthContext } from "../../../../provider/AuthProvider";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import SectionTitle from "../../../../components/SectionTitle/SectionTitle";
 
 const Enrolled = () => {
   const { user } = useContext(AuthContext);
   const [axiosSecure] = useAxiosSecure();
-  const { data: enrolled = [], refetch } = useQuery({
+  const { data: enrolled = [], } = useQuery({
     queryKey: ["payment", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/payment/${user?.email}`);
@@ -15,10 +16,11 @@ const Enrolled = () => {
     },
   });
   return (
-    <div>
+    <div className="mx-4">
       <Helmet>
         <title>Sports | My Enrolled Classes</title>
       </Helmet>
+      <SectionTitle subHeading="here" heading="Your all enrolled classes"></SectionTitle>
       <div className="mx-4 grid grid-cols-1 gap-6">
             {enrolled.map(data=>
             <div key={data._id} className="card card-side bg-base-100 shadow-xl ">

@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import SectionTitle from "../../../../components/SectionTitle/SectionTitle";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Selected = () => {
   const { user } = useContext(AuthContext);
@@ -38,32 +39,6 @@ const Selected = () => {
     });
   };
 
-  // const handlePayment = (data) => {
-  //   const {
-  //     classId,
-  //     price,
-  //     userEmail,
-  //     image,
-  //     instructorEmail,
-  //     instructorName,
-  //     className,
-  //     enrolled, seats
-  //   } = data;
-  //   const paymentData = {
-  //     classId,
-  //     price,
-  //     userEmail,
-  //     image,
-  //     instructorEmail,
-  //     instructorName,
-  //     className,enrolled, seats
-  //   };
-  //   console.log(paymentData)
-  //   .then((res) => {
-
-  //   });
-  // };
-
   const handlePayment = (data) => {
     const {
       classId,
@@ -88,7 +63,7 @@ const Selected = () => {
       seats,
     };
     const update = { enrolled: enrolled, seats: seats };
-    fetch(`http://localhost:5000/classes/payment/${classId}`, {
+    fetch(`https://sports-server-two.vercel.app/classes/payment/${classId}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(update),
@@ -96,7 +71,7 @@ const Selected = () => {
       .then((res) => res.json())
       .then((result) => {
         if (result.modifiedCount > 0) {
-          axiosSecure.post("/payment", paymentData).then((res) => {
+          axios.post("https://sports-server-two.vercel.app/payment", paymentData).then((res) => {
             if (res.data.insertedId) {
               refetch();
               Swal.fire({
