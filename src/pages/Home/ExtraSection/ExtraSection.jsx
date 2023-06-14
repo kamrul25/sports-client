@@ -12,7 +12,7 @@ const ExtraSection = () => {
       ></SectionTitle>
 
       <Fade direction="right">
-      <div className="flex justify-between items-center gap-10">
+      <div className="md:flex  justify-between items-center gap-10">
         <div className="shadow-lg rounded-lg    p-4 space-y-3">
           <div className="flex justify-start items-center gap-5">
             <div className="avatar w-24 ">

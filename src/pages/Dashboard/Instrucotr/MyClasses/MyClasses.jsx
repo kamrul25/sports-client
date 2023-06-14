@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../../../provider/AuthProvider";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import SectionTitle from "../../../../components/SectionTitle/SectionTitle";
 
 const MyClasses = () => {
   const { user } = useContext(AuthContext);
+  const [feedback, setFeedback] = useState("")
   const [axiosSecure] = useAxiosSecure();
   const { data: classes = [], refetch } = useQuery({
     queryKey: ["classes", user?.email],
@@ -16,7 +17,7 @@ const MyClasses = () => {
       return res.data;
     },
   });
-  
+
   const handleDelete = (cla) => {
     Swal.fire({
       title: "Are you sure?",
@@ -40,9 +41,11 @@ const MyClasses = () => {
 
   return (
     <div className="overflow-x-auto">
-        <SectionTitle subHeading="TESTIMONIALS" heading="Manage Your all Classes and read feedback"></SectionTitle>
+      <SectionTitle
+        subHeading="TESTIMONIALS"
+        heading="Manage Your all Classes and read feedback"
+      ></SectionTitle>
       <table className="table">
-        
         <thead>
           <tr className="text-xl">
             <th></th>
@@ -56,7 +59,6 @@ const MyClasses = () => {
           </tr>
         </thead>
         <tbody>
-          
           {classes.map((cla, index) => (
             <tr key={cla._id}>
               <th>{index + 1} </th>
@@ -71,7 +73,9 @@ const MyClasses = () => {
               <td> {cla.status}</td>
               <td>
                 {cla?.feedback ? (
-                  <button className="btn btn-success">Feedback</button>
+                  <button className="btn btn-success"
+                  onClick={()=>window.my_modal_3.showModal()}
+                  ><span onClick={() => setFeedback(cla?.feedback)}>See Feedback</span></button>
                 ) : (
                   <button className="btn btn-success" disabled>
                     Feedback
@@ -79,19 +83,37 @@ const MyClasses = () => {
                 )}
               </td>
               <td> {cla.price}</td>
-              <td> {cla.seats}</td>
+              <td className="text-center"> {cla.seats}</td>
               <td>
+                {cla?.status === "approved" ? (
+                  <button
+                    disabled
+                    className="btn btn-ghost bg-red-600  text-white"
+                  >
+                    <FaTrashAlt></FaTrashAlt>
+                  </button>
+                ) : (
                   <button
                     onClick={() => handleDelete(cla)}
                     className="btn btn-ghost bg-red-600  text-white"
                   >
                     <FaTrashAlt></FaTrashAlt>
                   </button>
-                </td>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+
+<dialog id="my_modal_3" className="modal">
+  <form method="dialog" className="modal-box">
+    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    <h3 className="font-bold text-lg">Feedback!</h3>
+    <p className="py-4">{feedback}</p>
+  </form>
+</dialog>
     </div>
   );
 };
