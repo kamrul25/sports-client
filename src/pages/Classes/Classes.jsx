@@ -16,7 +16,7 @@ const Classes = () => {
   const { data: classes = [], refetch } = useQuery({
     queryKey: ["classes", "approved"],
     queryFn: async () => {
-      const res = await  axios.get(`http://localhost:5000/classes/approved`)
+      const res = await  axios.get(`https://sports-server-two.vercel.app/classes/approved`)
       return res.data;
     },
   });
@@ -63,7 +63,7 @@ const Classes = () => {
       ></SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
         {classes.map((cla) => (
-          <div key={cla._id} className={ cla.seats === 0 ?"card bg-red-500 shadow-xl border border-primary": "card bg-base-100 shadow-xl border border-primary"}>
+          <div key={cla._id} className={ cla.seats === "0" ?"card bg-red-500 shadow-xl border border-primary": "card bg-base-100 shadow-xl border border-primary"}>
             <figure className="w-full h-[300px]">
               <img
                 src={cla.image}

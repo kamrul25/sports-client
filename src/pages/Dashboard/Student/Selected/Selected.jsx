@@ -38,6 +38,32 @@ const Selected = () => {
     });
   };
 
+  // const handlePayment = (data) => {
+  //   const {
+  //     classId,
+  //     price,
+  //     userEmail,
+  //     image,
+  //     instructorEmail,
+  //     instructorName,
+  //     className,
+  //     enrolled, seats
+  //   } = data;
+  //   const paymentData = {
+  //     classId,
+  //     price,
+  //     userEmail,
+  //     image,
+  //     instructorEmail,
+  //     instructorName,
+  //     className,enrolled, seats
+  //   };
+  //   console.log(paymentData)
+  //   .then((res) => {
+
+  //   });
+  // };
+
   const handlePayment = (data) => {
     const {
       classId,
@@ -47,7 +73,8 @@ const Selected = () => {
       instructorEmail,
       instructorName,
       className,
-      enrolled, seats
+      enrolled,
+      seats,
     } = data;
     const paymentData = {
       classId,
@@ -56,30 +83,40 @@ const Selected = () => {
       image,
       instructorEmail,
       instructorName,
-      className,enrolled, seats
+      className,
+      enrolled,
+      seats,
     };
-    axiosSecure.post("/payment", paymentData).then((res) => {
-      if (res.data.insertedId) {
-        refetch();
-        console.log(res.data);
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Class added successfully",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    });
-  };
-
-  const handleUpdate = (data) => {
-    fetch(`http://localhost:5000/classes/payment/${data.classId}`, {
+    const update = { enrolled: enrolled, seats: seats };
+    fetch(`http://localhost:5000/classes/payment/${classId}`, {
       method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(update),
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
+        if (result.modifiedCount > 0) {
+          axiosSecure.post("/payment", paymentData).then((res) => {
+            if (res.data.insertedId) {
+              refetch();
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Payment successfully",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }else {
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Already Payment",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          });
+        } 
       });
   };
   return (
@@ -111,12 +148,6 @@ const Selected = () => {
                   onClick={() => handlePayment(data)}
                 >
                   Pay
-                </button>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => handleUpdate(data)}
-                >
-                  Update
                 </button>
                 <button
                   className="btn btn-error"

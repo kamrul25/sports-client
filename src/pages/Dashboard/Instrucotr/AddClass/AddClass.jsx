@@ -23,18 +23,19 @@ const AddClass = () => {
     })
       .then((res) => res.json())
       .then((imageResponse) => {
-        console.log(imageResponse)
+        
         if (imageResponse.success) {
           const imgURL = imageResponse.data.display_url;
           const { name, price, seats, instructorName, instructorEmail } = data;
           const newClass = {
             name,
-            price: parseFloat(price),
-            seats: parseInt(seats),
+            price:price,
+            seats: seats,
             image: imgURL,
             instructorName,
             instructorEmail,
-            status:"pending"
+            status:"pending",
+            enrolled: "0"
           };
           
           axiosSecure.post("/classes", newClass).then((data) => {

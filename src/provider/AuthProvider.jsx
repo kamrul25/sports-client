@@ -50,7 +50,7 @@ const AuthProvider = ({ children }) => {
         const user = { email: currentUser.email };
 
         axios.post(`https://sports-server-two.vercel.app/jwt`, user)
-        // axios.post(`http://localhost:5000/jwt`, user)
+        // axios.post(`https://sports-server-two.vercel.app/jwt`, user)
         .then(data=>{
           localStorage.setItem("access-token", data.data.token);
           setLoading(false);

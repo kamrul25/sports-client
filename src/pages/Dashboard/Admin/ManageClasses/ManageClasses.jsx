@@ -24,7 +24,7 @@ const ManageClasses = () => {
     //   headers: { "content-type": "application/json" },
     //   body: JSON.stringify({ status: status }),
     // })
-    fetch(`http://localhost:5000/classes/admin/${cla._id}`, {
+    fetch(`https://sports-server-two.vercel.app/classes/admin/${cla._id}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ status: status }),
@@ -47,14 +47,14 @@ const ManageClasses = () => {
   };
 
   const handleFeedback = () => {
-    fetch(`http://localhost:5000/classes/admin/${classId}`, {
+    fetch(`https://sports-server-two.vercel.app/classes/admin/${classId}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ feedback: feedback }),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.modifiedCount) {
+        if (data.modifiedCount > 0) {
           refetch();
           Swal.fire({
             position: "top-end",
@@ -82,7 +82,7 @@ const ManageClasses = () => {
             <th>Instructor</th>
             <th>Email</th>
             <th>Status</th>
-            <th></th>
+            <th>Approve Or Denied</th>
             <th>Feedback</th>
             <th>Price</th>
             <th>Available Seats</th>
