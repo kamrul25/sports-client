@@ -6,15 +6,16 @@ import { AuthContext } from "../provider/AuthProvider";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const Dashboard = () => {
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading, setUserRole } = useContext(AuthContext);
   const [axiosSecure] = useAxiosSecure();
   const [role, setRole] = useState(null);
   useEffect(() => {
     // axios(`https://sports-server-two.vercel.app/users/${user.email}`)
    axiosSecure.get(`/users/${user?.email}`).then((data) => {
     setRole(data.data.role);
+    setUserRole(data.data.role)
   });
-  }, [user, axiosSecure, loading]);
+  }, [user, axiosSecure, loading, setUserRole]);
 
   return (
     <div>
@@ -108,7 +109,7 @@ const Dashboard = () => {
               <div className="space-y-3">
                 <li>
                   <NavLink
-                    to="/dashboard/history"
+                    to="/dashboard/selected"
                     className={({ isActive, isPending }) =>
                       isActive
                         ? "text-success flex gap-2 items-center"
@@ -117,7 +118,21 @@ const Dashboard = () => {
                         : "text-black flex gap-2 items-center"
                     }
                   >
-                    <FaWallet></FaWallet> Payment History
+                    <FaBook></FaBook>My Selected Classes
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/enrolled"
+                    className={({ isActive, isPending }) =>
+                      isActive
+                        ? "text-success flex gap-2 items-center"
+                        : isPending
+                        ? ""
+                        : "text-black flex gap-2 items-center"
+                    }
+                  >
+                    <FaWallet></FaWallet>My Enrolled Classes
                   </NavLink>
                 </li>
               </div>
@@ -176,76 +191,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-/* 
-  <div className="drawer drawer-mobile ">
-        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content ">
-          <Outlet></Outlet>
-          <label
-            htmlFor="my-drawer-2"
-            className="btn btn-primary drawer-button lg:hidden"
-          >
-            Open drawer
-          </label>
-        </div>
-        <div className="drawer-side ">
-          <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-          <ul className="menu p-4 w-80 h-full bg-base-200 text-base-content">
-            
-            {isAdmin && (
-              <>
-                <li>
-                  <NavLink to="/dashboard/allUsers">
-                    <FaUsers></FaUsers> All Users
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/dashboard/manageClasses">
-                    Manage Classes
-                  </NavLink>
-                </li>
-              </>
-            )}
-             {isInstructor && (
-            <>
-            
-              <li>
-                <NavLink to="/dashboard/addItem">
-                  {" "}
-                  <FaUtensils></FaUtensils> Add An Item
-                </NavLink>
-              </li>
-             
-              <li>
-                <NavLink to="/dashboard/history">
-                  <FaBook></FaBook> Manage Bookings
-                </NavLink>
-              </li>
-             
-            </>
-          ) }
-            {isStudent &&   <>
-              <li>
-                <NavLink to="/dashboard/history">
-                  <FaWallet></FaWallet> Payment History
-                </NavLink>
-              </li>
-              
-            </>} 
-            <div className="divider"></div>
-            <li>
-              <NavLink to="/">
-                <FaHome></FaHome> Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/instructors"> Instructors</NavLink>
-            </li>
-            <li>
-              <NavLink to="/classes">Classes</NavLink>
-            </li>
-          </ul>
-        </div>
-      </div>
-*/

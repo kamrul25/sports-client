@@ -65,7 +65,7 @@ const AddClass = () => {
         heading="Add a class"
       ></SectionTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex items-center gap-4 my-2">
+        <div className="md:flex items-center gap-4 my-2">
           <div className="form-control w-full mb-4">
             <label className="label">
               <span className="label-text font-semibold">Class Name</span>
@@ -88,7 +88,7 @@ const AddClass = () => {
             />
           </div>
         </div>
-        <div className="flex items-center gap-4 my-2">
+        <div className="md:flex items-center gap-4 my-2">
           <div className="form-control w-full mb-4">
             <label className="label">
               <span className="label-text font-semibold">Your Name</span>
@@ -114,7 +114,7 @@ const AddClass = () => {
             />
           </div>
         </div>
-        <div className="flex items-center gap-4 my-2">
+        <div className="md:flex items-center gap-4 my-2">
           <div className="form-control w-full mb-4">
             <label className="label font-semibold">
               <span className="label-text font-semibold">Price</span>

@@ -24,7 +24,7 @@ const Instructors = () => {
         ></SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {instructors.map((person) => (
-          <div key={person._id} className="card bg-base-100 shadow-xl">
+          <div key={person._id} className="card bg-base-100 shadow-xl border border-primary">
             <figure className="w-full h-[300px]">
               <img
                 src={person.image}

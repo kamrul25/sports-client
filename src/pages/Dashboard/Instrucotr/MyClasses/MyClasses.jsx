@@ -55,6 +55,7 @@ const MyClasses = () => {
             <th>Feedback</th>
             <th>Price</th>
             <th>Available Seats</th>
+            <th>Total Enrolled</th>
             <th></th>
           </tr>
         </thead>
@@ -84,6 +85,7 @@ const MyClasses = () => {
               </td>
               <td> {cla.price}</td>
               <td className="text-center"> {cla.seats}</td>
+              <td className="text-center"> {cla.enrolled}</td>
               <td>
                 {cla?.status === "approved" ? (
                   <button
