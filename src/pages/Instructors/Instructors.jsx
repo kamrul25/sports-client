@@ -1,14 +1,14 @@
 import { Helmet } from "react-helmet-async";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import SectionTitle from "../../components/SectionTitle/SectionTitle";
+import axios from "axios";
 
 const Instructors = () => {
-  const [axiosSecure] = useAxiosSecure();
+ 
   const { data: instructors = [] } = useQuery({
     queryKey: ["users", "instructors"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users/instructor`);
+      const res = await  axios.get(`http://localhost:5000/users/instructor`)
       return res.data;
     },
   });

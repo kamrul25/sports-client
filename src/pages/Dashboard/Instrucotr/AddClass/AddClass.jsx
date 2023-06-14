@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../../../provider/AuthProvider";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const img_hosting_token = import.meta.env.VITE_Image_Upload_token;
 
@@ -60,6 +61,9 @@ const AddClass = () => {
   };
   return (
     <div className="w-full px-10 my-10">
+      <Helmet>
+        <title>Sports | Add A Class</title>
+      </Helmet>
       <SectionTitle
         subHeading="What's new"
         heading="Add a class"

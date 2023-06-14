@@ -18,30 +18,74 @@ const Selected = () => {
   });
 
   const handleDelete = (data) => {
-    console.log(data);
     Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axiosSecure.delete(`/selected/${data._id}`).then((res) => {
-            if (res.data.deletedCount > 0) {
-              refetch();
-              Swal.fire("Deleted!", "Your file has been deleted.", "success");
-            }
-          });
-        }
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/selected/${data._id}`).then((res) => {
+          if (res.data.deletedCount > 0) {
+            refetch();
+            Swal.fire("Deleted!", "Your file has been deleted.", "success");
+          }
+        });
+      }
+    });
+  };
+
+  const handlePayment = (data) => {
+    const {
+      classId,
+      price,
+      userEmail,
+      image,
+      instructorEmail,
+      instructorName,
+      className,
+      enrolled, seats
+    } = data;
+    const paymentData = {
+      classId,
+      price,
+      userEmail,
+      image,
+      instructorEmail,
+      instructorName,
+      className,enrolled, seats
+    };
+    axiosSecure.post("/payment", paymentData).then((res) => {
+      if (res.data.insertedId) {
+        refetch();
+        console.log(res.data);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Class added successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
+  };
+
+  const handleUpdate = (data) => {
+    fetch(`http://localhost:5000/classes/payment/${data.classId}`, {
+      method: "PATCH",
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
       });
   };
   return (
-    <div>
+    <div className="mx-4">
       <Helmet>
-        <title>Sports | Selected Classes</title>
+        <title>Sports |My Selected Classes</title>
       </Helmet>
       <SectionTitle
         subHeading="your all selected classes"
@@ -51,7 +95,10 @@ const Selected = () => {
         {selected.map((data) => (
           <div key={data._id} className="card card-side bg-base-100 shadow-xl ">
             <figure>
-              <img src={data.image} className="h-[200px] w-[300px]" />
+              <img
+                src={data.image}
+                className="h-[200px] w-[300px] rounded-lg"
+              />
             </figure>
             <div className="card-body">
               <h2 className="card-title">Class Name: {data.className}</h2>
@@ -59,7 +106,18 @@ const Selected = () => {
               <p>Instructor Email: {data.instructorEmail}</p>
               <p>Price: {data.price}</p>
               <div className="card-actions justify-end">
-                <button className="btn btn-primary">Pay</button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handlePayment(data)}
+                >
+                  Pay
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleUpdate(data)}
+                >
+                  Update
+                </button>
                 <button
                   className="btn btn-error"
                   onClick={() => handleDelete(data)}

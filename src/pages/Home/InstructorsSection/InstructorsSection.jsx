@@ -1,13 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import axios from "axios";
 
 const InstructorsSection = () => {
-    const [axiosSecure] = useAxiosSecure();
     const { data: instructors = [] } = useQuery({
       queryKey: ["users", "instructors"],
       queryFn: async () => {
-        const res = await axiosSecure.get(`/users/instructor`);
+        const res = await  axios.get(`http://localhost:5000/users/instructor`)
         return res.data;
       },
     });

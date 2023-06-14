@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import SectionTitle from "../../../../components/SectionTitle/SectionTitle";
+import { Helmet } from "react-helmet-async";
 
 const MyClasses = () => {
   const { user } = useContext(AuthContext);
@@ -41,6 +42,9 @@ const MyClasses = () => {
 
   return (
     <div className="overflow-x-auto">
+      <Helmet>
+        <title>Sports | My Classes</title>
+      </Helmet>
       <SectionTitle
         subHeading="TESTIMONIALS"
         heading="Manage Your all Classes and read feedback"

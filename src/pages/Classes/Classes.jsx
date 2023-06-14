@@ -6,6 +6,7 @@ import { useContext,  } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Classes = () => {
   const { user, userRole } = useContext(AuthContext);
@@ -15,7 +16,7 @@ const Classes = () => {
   const { data: classes = [], refetch } = useQuery({
     queryKey: ["classes", "approved"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/classes/approved`);
+      const res = await  axios.get(`http://localhost:5000/classes/approved`)
       return res.data;
     },
   });
@@ -28,8 +29,8 @@ const Classes = () => {
   };
 
   const handleSelected =(cla)=>{
-    const {instructorName, instructorEmail, name, _id, image, price} = cla
-    const selectedData = {classId: _id, className: name, image, instructorName, instructorEmail, userEmail: user?.email, price}
+    const {instructorName, instructorEmail, name, _id, image, price,enrolled, seats} = cla
+    const selectedData = {classId: _id, className: name, image, instructorName, instructorEmail, userEmail: user?.email, price,enrolled, seats}
     axiosSecure.post("/selected", selectedData).then((data) => {
       if (data.data.insertedId) {
        refetch();
