@@ -19,11 +19,7 @@ const ManageClasses = () => {
   //
 
   const handleAction = (cla, status) => {
-    // fetch(`https://sports-server-two.vercel.app/classses/admin/${cla._id}`, {
-    //   method: "PATCH",
-    //   headers: { "content-type": "application/json" },
-    //   body: JSON.stringify({ status: status }),
-    // })
+    
     fetch(`https://sports-server-two.vercel.app/classes/admin/${cla._id}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
@@ -104,7 +100,7 @@ const ManageClasses = () => {
               <td>{cla.instructorEmail}</td>
               <td> {cla.status}</td>
               <td className="flex items-center gap-3">
-                {cla.status === "approved" || cla.status === " denied" ? (
+                {cla.status === "approved" || cla.status === "denied" ? (
                   <>
                     <button className="btn btn-success" disabled>
                       Approved

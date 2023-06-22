@@ -2,14 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import SectionTitle from "../../components/SectionTitle/SectionTitle";
-import { useContext,  } from "react";
+import { useContext,   } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
 const Classes = () => {
-  const { user, userRole } = useContext(AuthContext);
+  const { user,  } = useContext(AuthContext);
   const location = useLocation();
 
   const [axiosSecure] = useAxiosSecure();
@@ -20,7 +20,15 @@ const Classes = () => {
       return res.data;
     },
   });
-
+  
+  const {data: role,} = useQuery({
+    queryKey:["users", user?.email],
+    queryFn:async()=>{
+      const res = await axiosSecure.get(`/users/${user?.email}`)
+      return res.data.role
+    }
+  })
+  
   const handleNotUser = () => {
     Swal.fire("You have to log in first to view details !!");
     return (
@@ -90,18 +98,13 @@ const Classes = () => {
               </div>
               <div className="card-actions justify-end my-4">
                 {user ? (
-                  userRole === "admin" || userRole === "instructor" || cla.seats === "0" ? (
-                    <button className="btn btn-primary" disabled>
-                      Selected
-                    </button>
-                  ) : (
-                    <button className="btn btn-primary" onClick={() =>handleSelected(cla)}>Selected</button>
-                  )
+                    <button className="btn btn-primary" onClick={() =>handleSelected(cla)}  disabled={ role === "admin" || role === "instructor" || cla.seats === "0"}>Selected</button>
                 ) : (
                   <Link
                     to="/signIn"
                     className="btn btn-primary"
                     onClick={handleNotUser}
+                    disabled={cla.seats === "0"}
                   >
                     Selected
                   </Link>
