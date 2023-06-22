@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
-import { Link } from "react-router-dom";
+
 
 const PopularClasses = () => {
   const { data: popularClasses = [] } = useQuery({
@@ -18,7 +18,7 @@ const PopularClasses = () => {
         heading="all popular classes"
       ></SectionTitle>
        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {popularClasses.slice(0, 6).map((cla) => (
+        {popularClasses.map((cla) => (
           <div key={cla._id} className="card bg-base-100 shadow-xl">
             <figure className="w-full h-[300px]">
               <img
@@ -30,9 +30,7 @@ const PopularClasses = () => {
           </div>
         ))}
       </div>
-      <div className="text-center my-5 ">
-        <Link to="classes" className="btn btn-primary">See All Classes</Link>
-      </div>
+     
     </div>
   );
 };
