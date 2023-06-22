@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const InstructorsSection = () => {
     const { data: instructors = [] } = useQuery({
@@ -11,6 +12,10 @@ const InstructorsSection = () => {
         return res.data;
       },
     });
+
+    useEffect(()=>{
+      window.scrollTo(0,0)
+      },[])
     return (
         <div >
         <SectionTitle
@@ -31,7 +36,7 @@ const InstructorsSection = () => {
         ))}
       </div>
       <div className="text-center my-5 ">
-        <Link to="instructors" className="btn btn-primary">See All Classes</Link>
+        <Link to="instructors" className="btn btn-primary">See All Instructors</Link>
       </div>
       </div>
     );

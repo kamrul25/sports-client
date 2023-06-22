@@ -24,7 +24,7 @@ const Classes = () => {
   const {data: role,} = useQuery({
     queryKey:["users", user?.email],
     queryFn:async()=>{
-      const res = await axiosSecure.get(`/users/${user?.email}`)
+      const res = await axios.get(`https://sports-server-two.vercel.app/users/${user?.email}`)
       return res.data.role
     }
   })
